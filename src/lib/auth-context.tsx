@@ -25,6 +25,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const storedUser = loadFromStorage<User | null>(storageKeys.user, null)
     if (storedUser) {
       setUser(storedUser)
+      if (typeof window !== 'undefined') {
+        if (!window.localStorage.getItem('userName')) {
+          window.localStorage.setItem('userName', storedUser.name)
+        }
+        if (!window.localStorage.getItem('userToken')) {
+          window.localStorage.setItem('userToken', `userToken-restored-${storedUser.id || 'session'}`)
+        }
+      }
     }
   }, [])
 
@@ -60,6 +68,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           })
       setUser(nextUser)
       saveToStorage(storageKeys.user, nextUser)
+      if (typeof window !== 'undefined') {
+        const token = `userToken-${Date.now()}`
+        window.localStorage.setItem('userToken', token)
+        window.localStorage.setItem('userName', nextUser.name)
+      }
     }
     setIsLoading(false)
   }, [buildUser])
@@ -68,6 +81,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
     if (typeof window !== 'undefined') {
       window.localStorage.removeItem(storageKeys.user)
+      window.localStorage.removeItem('userToken')
+      window.localStorage.removeItem('userName')
     }
   }, [])
 
@@ -84,6 +99,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       setUser(nextUser)
       saveToStorage(storageKeys.user, nextUser)
+      if (typeof window !== 'undefined') {
+        const token = `userToken-${Date.now()}`
+        window.localStorage.setItem('userToken', token)
+        window.localStorage.setItem('userName', nextUser.name)
+      }
     }
     setIsLoading(false)
   }, [buildUser])
@@ -93,6 +113,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!prev) return prev
       const nextUser = { ...prev, ...updates }
       saveToStorage(storageKeys.user, nextUser)
+      if (typeof window !== 'undefined' && typeof updates.name === 'string') {
+        window.localStorage.setItem('userName', updates.name)
+      }
       return nextUser
     })
   }, [])

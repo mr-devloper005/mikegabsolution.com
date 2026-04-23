@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Building2, FileText, Image as ImageIcon, LayoutGrid, Tag, User } from 'lucide-react'
+import { ArrowRight, Building2, FileText, Image as ImageIcon, LayoutGrid, MapPin, MessageCircle, Sparkles, Tag, User, Zap } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { TaskListClient } from '@/components/tasks/task-list-client'
@@ -9,6 +9,8 @@ import { SITE_CONFIG, getTaskConfig, type TaskKey } from '@/lib/site-config'
 import { CATEGORY_OPTIONS, normalizeCategory } from '@/lib/categories'
 import { taskIntroCopy } from '@/config/site.content'
 import { getFactoryState } from '@/design/factory/get-factory-state'
+import { classifieds } from '@/lib/classifieds-theme'
+import { cn } from '@/lib/utils'
 import { TASK_LIST_PAGE_OVERRIDE_ENABLED, TaskListPageOverride } from '@/overrides/task-list-page'
 
 const taskIcons: Record<TaskKey, any> = {
@@ -33,8 +35,8 @@ const variantShells = {
   'image-portfolio': 'bg-[linear-gradient(180deg,#07111f_0%,#13203a_100%)] text-white',
   'profile-creator': 'bg-[linear-gradient(180deg,#0a1120_0%,#101c34_100%)] text-white',
   'profile-business': 'bg-[linear-gradient(180deg,#f6fbff_0%,#ffffff_100%)]',
-  'classified-bulletin': 'bg-[linear-gradient(180deg,#edf3e4_0%,#ffffff_100%)]',
-  'classified-market': 'bg-[linear-gradient(180deg,#f4f6ef_0%,#ffffff_100%)]',
+  'classified-bulletin': 'bg-[linear-gradient(180deg,#f4fbfd_0%,#ffffff_100%)]',
+  'classified-market': 'bg-[linear-gradient(180deg,#f4fbfd_0%,#ffffff_100%)]',
   'sbm-curation': 'bg-[linear-gradient(180deg,#fff7ee_0%,#ffffff_100%)]',
   'sbm-library': 'bg-[linear-gradient(180deg,#f7f8fc_0%,#ffffff_100%)]',
 } as const
@@ -61,6 +63,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
   const Icon = taskIcons[task] || LayoutGrid
 
   const isDark = ['image-masonry', 'image-portfolio', 'profile-creator'].includes(layoutKey)
+  const isClassifiedLayout = layoutKey.startsWith('classified')
   const ui = isDark
     ? {
         muted: 'text-slate-300',
@@ -77,13 +80,21 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           input: 'border border-[#dbc6b6] bg-white text-[#2f1d16]',
           button: 'bg-[#2f1d16] text-[#fff4e4] hover:bg-[#452920]',
         }
-      : {
-          muted: 'text-slate-600',
-          panel: 'border border-slate-200 bg-white',
-          soft: 'border border-slate-200 bg-slate-50',
-          input: 'border border-slate-200 bg-white text-slate-950',
-          button: 'bg-slate-950 text-white hover:bg-slate-800',
-        }
+      : isClassifiedLayout
+        ? {
+            muted: 'text-slate-600',
+            panel: 'border border-slate-200/80 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.06)]',
+            soft: 'border border-slate-200/70 bg-slate-50/90',
+            input: 'border border-slate-200 bg-white text-slate-950 rounded-full',
+            button: 'bg-[#12B5D4] text-white hover:bg-[#0fa3bf] rounded-full',
+          }
+        : {
+            muted: 'text-slate-600',
+            panel: 'border border-slate-200 bg-white',
+            soft: 'border border-slate-200 bg-slate-50',
+            input: 'border border-slate-200 bg-white text-slate-950',
+            button: 'bg-slate-950 text-white hover:bg-slate-800',
+          }
 
   return (
     <div className={`min-h-screen ${shellClass}`}>
@@ -200,19 +211,136 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         ) : null}
 
         {layoutKey === 'classified-bulletin' || layoutKey === 'classified-market' ? (
-          <section className="mb-12 grid gap-4 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-            <div className={`rounded-[1.8rem] p-6 ${ui.panel}`}>
-              <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
-              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Fast-moving notices, offers, and responses in a compact board format.</h1>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-              {['Quick to scan', 'Shorter response path', 'Clearer urgency cues'].map((item) => (
-                <div key={item} className={`rounded-[1.5rem] p-5 ${ui.soft}`}>
-                  <p className="text-sm font-semibold">{item}</p>
+          <div className="mb-14 space-y-10">
+            <section className="relative overflow-hidden rounded-[2.5rem] border border-slate-200/60 bg-gradient-to-b from-white to-[#f4fbfd]/80 shadow-[0_32px_80px_rgba(15,23,42,0.08)]">
+              <div className="pointer-events-none absolute -right-20 top-0 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(18,181,212,0.22),transparent_65%)] blur-2xl" />
+              <div className="pointer-events-none absolute -left-10 bottom-0 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(167,139,250,0.16),transparent_70%)] blur-2xl" />
+              <div className="relative grid gap-10 p-8 sm:p-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+                <div>
+                  <span className={classifieds.badge}>
+                    <Sparkles className="h-3.5 w-3.5" />
+                    {taskConfig?.label || 'Classifieds'}
+                  </span>
+                  <h1 className="mt-5 text-4xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-5xl lg:text-[2.75rem]">
+                    Local deals, without the scroll fatigue
+                  </h1>
+                  <p className={`mt-5 max-w-xl text-base leading-8 ${ui.muted}`}>
+                    {taskConfig?.description} Scan fresh listings, filter by what matters, and use chat to align before you meet—built for the same clean rhythm as the rest of{' '}
+                    {SITE_CONFIG.name}.
+                  </p>
+                  <div className="mt-8 flex flex-wrap items-center gap-3">
+                    <Link href="/create/classified" className={cn(classifieds.pill, 'inline-flex items-center')}>
+                      Post an ad
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                    <Link
+                      href="/pricing"
+                      className="inline-flex items-center rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-[#12B5D4]/40 hover:text-[#0a6f82]"
+                    >
+                      See plans &amp; boosts
+                    </Link>
+                    <Link href="/help" className="text-sm font-semibold text-[#0a6f82] hover:underline">
+                      Buyer &amp; seller guide →
+                    </Link>
+                  </div>
                 </div>
-              ))}
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {[
+                    { icon: Zap, title: 'Faster to scan', body: 'Cards show price cues and location context up front.' },
+                    { icon: MessageCircle, title: 'Message first', body: 'Keep your phone number private until you are ready.' },
+                    { icon: MapPin, title: 'Near you', body: 'Discovery tuned for your area and commute patterns.' },
+                    { icon: Tag, title: 'Right category', body: 'Pick a lane so serious buyers see your ad.' },
+                  ].map((item) => (
+                    <div key={item.title} className={cn(classifieds.soft, 'p-5 transition hover:border-[#12B5D4]/30')}>
+                      <item.icon className="h-5 w-5 text-[#12B5D4]" />
+                      <p className="mt-3 text-sm font-semibold text-slate-900">{item.title}</p>
+                      <p className={`mt-1.5 text-xs leading-6 ${ui.muted}`}>{item.body}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <div className="space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#0a6f82]">Browse by category</p>
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  href="/classifieds"
+                  className={cn(
+                    'rounded-full border px-4 py-2 text-sm font-medium transition',
+                    normalizedCategory === 'all'
+                      ? 'border-[#12B5D4] bg-[#12B5D4] text-white shadow-sm'
+                      : 'border-slate-200 bg-white text-slate-700 hover:border-[#12B5D4]/40',
+                  )}
+                >
+                  All
+                </Link>
+                {CATEGORY_OPTIONS.slice(0, 12).map((item) => {
+                  const active = normalizedCategory !== 'all' && normalizeCategory(item.slug) === normalizedCategory
+                  return (
+                    <Link
+                      key={item.slug}
+                      href={`/classifieds?category=${encodeURIComponent(item.slug)}`}
+                      className={cn(
+                        'rounded-full border px-4 py-2 text-sm font-medium transition',
+                        active
+                          ? 'border-[#12B5D4] bg-[#12B5D4] text-white shadow-sm'
+                          : 'border-slate-200 bg-white text-slate-700 hover:border-[#12B5D4]/40',
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  )
+                })}
+                <Link href="/help" className="rounded-full border border-dashed border-slate-300 px-4 py-2 text-sm text-slate-500 hover:border-[#12B5D4]/50 hover:text-[#0a6f82]">
+                  Not sure? Help →
+                </Link>
+              </div>
             </div>
-          </section>
+
+            <div className={cn(classifieds.panel, 'p-6 sm:p-7')}>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-950">Refine results</h2>
+                  <p className={`mt-1 text-sm ${ui.muted}`}>Narrow the grid by category, then apply—same as deep links in the chips above.</p>
+                </div>
+                {normalizedCategory !== 'all' ? (
+                  <Link
+                    href="/classifieds"
+                    className="inline-flex shrink-0 items-center text-sm font-semibold text-[#0a6f82] hover:underline"
+                  >
+                    Clear filter
+                  </Link>
+                ) : null}
+              </div>
+              <form
+                className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-stretch"
+                action={taskConfig?.route || '/classifieds'}
+                method="get"
+              >
+                <div className="min-w-0 flex-1">
+                  <label className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">Category</label>
+                  <select
+                    name="category"
+                    defaultValue={normalizedCategory}
+                    className="mt-2 h-12 w-full rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-inner outline-none ring-[#12B5D4]/20 focus:ring-2"
+                  >
+                    <option value="all">All categories</option>
+                    {CATEGORY_OPTIONS.map((item) => (
+                      <option key={item.slug} value={item.slug}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex items-end">
+                  <button type="submit" className={cn('h-12 w-full min-w-[140px] rounded-full text-sm font-semibold shadow-sm sm:w-auto', ui.button, 'px-8')}>
+                    Apply
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         ) : null}
 
         {layoutKey === 'sbm-curation' || layoutKey === 'sbm-library' ? (
@@ -237,7 +365,23 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           </section>
         ) : null}
 
-        {intro ? (
+        {task === 'classified' ? (
+          <section className={cn(classifieds.soft, 'mb-12 p-7 sm:p-8')}>
+            <h2 className="text-xl font-semibold tracking-[-0.02em] text-slate-950 sm:text-2xl">How classifieds work here</h2>
+            <p className={cn('mt-3 max-w-3xl text-sm leading-8', ui.muted)}>
+              Short-form posts for items, services, and local opportunities. Use clear photos and a firm price, then keep the conversation in-app until you are ready to meet. We surface
+              categories so the right buyers find you—without mixing in unrelated content types.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/help" className={cn(classifieds.pillOutline, 'text-sm')}>
+                Help Center
+              </Link>
+              <Link href="/contact" className="text-sm font-semibold text-[#0a6f82] hover:underline">
+                Contact support
+              </Link>
+            </div>
+          </section>
+        ) : intro ? (
           <section className={`mb-12 rounded-[2rem] p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)] sm:p-8 ${ui.panel}`}>
             <h2 className="text-2xl font-semibold text-foreground">{intro.title}</h2>
             {intro.paragraphs.map((paragraph) => (
