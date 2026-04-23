@@ -10,6 +10,7 @@ const sections = [
 export default function CookiesPage() {
   return (
     <PageShell
+      variant="classifieds"
       title="Cookie Policy"
       description="Details about the cookies we use."
     >

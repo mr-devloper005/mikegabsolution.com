@@ -1,8 +1,9 @@
 import Link from 'next/link'
-import { FileText, Building2, LayoutGrid, Tag, Github, Twitter, Linkedin, Image as ImageIcon, User, ArrowRight, Sparkles } from 'lucide-react'
+import { FileText, Building2, LayoutGrid, Tag, Github, Twitter, Linkedin, Facebook, Image as ImageIcon, User, ArrowRight, Sparkles } from 'lucide-react'
 import { SITE_CONFIG, type TaskKey } from '@/lib/site-config'
 import { siteContent } from '@/config/site.content'
 import { getFactoryState } from '@/design/factory/get-factory-state'
+import { isClassifiedsShell } from '@/lib/classifieds-theme'
 import { FOOTER_OVERRIDE_ENABLED, FooterOverride } from '@/overrides/footer'
 
 const taskIcons: Record<TaskKey, any> = {
@@ -61,6 +62,84 @@ export function Footer() {
   const primaryTask = enabledTasks.find((task) => task.key === recipe.primaryTask) || enabledTasks[0]
 
   if (recipe.footer === 'minimal-footer') {
+    if (isClassifiedsShell(recipe)) {
+      return (
+        <footer className="bg-[#0A191E] text-slate-100">
+          <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+            <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+              <div>
+                <Link href="/" className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-1">
+                    <img src="/favicon.png?v=20260401" alt="" width="40" height="40" className="h-full w-full object-contain" />
+                  </div>
+                  <span className="text-lg font-semibold text-white">{SITE_CONFIG.name}</span>
+                </Link>
+                <p className="mt-4 text-sm leading-7 text-slate-400">hello@{SITE_CONFIG.domain}</p>
+                <p className="mt-2 text-sm text-slate-400">Local classifieds built for safer meetups and faster replies.</p>
+              </div>
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Site map</h3>
+                <ul className="mt-4 space-y-3 text-sm">
+                  {[
+                    { name: 'Home', href: '/' },
+                    { name: 'Categories', href: '/classifieds' },
+                    { name: 'Pricing', href: '/pricing' },
+                    { name: 'Safety tips', href: '/about' },
+                  ].map((l) => (
+                    <li key={l.name}>
+                      <Link href={l.href} className="text-slate-300 hover:text-white">
+                        {l.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Support</h3>
+                <ul className="mt-4 space-y-3 text-sm">
+                  {[
+                    { name: 'Help Center', href: '/help' },
+                    { name: 'Contact Us', href: '/contact' },
+                    { name: 'Privacy Policy', href: '/privacy' },
+                    { name: 'Terms of Service', href: '/terms' },
+                  ].map((l) => (
+                    <li key={l.name}>
+                      <Link href={l.href} className="text-slate-300 hover:text-white">
+                        {l.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Newsletter</h3>
+                <p className="mt-4 text-sm text-slate-400">Subscribe for weekly picks and safety reminders.</p>
+                <div className="mt-4 flex rounded-full border border-white/10 bg-black/30 p-1">
+                  <input type="email" placeholder="Email address" className="min-w-0 flex-1 bg-transparent px-4 text-sm text-white outline-none placeholder:text-slate-500" readOnly aria-label="Newsletter email" />
+                  <button type="button" className="rounded-full bg-[#12B5D4] px-4 py-2 text-sm font-semibold text-white">
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm text-slate-500 sm:flex-row">
+              <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.</p>
+              <div className="flex gap-3">
+                <Link href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/10 p-2 text-slate-300 hover:bg-white/10 hover:text-white" aria-label="Facebook">
+                  <Facebook className="h-4 w-4" />
+                </Link>
+                <Link href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/10 p-2 text-slate-300 hover:bg-white/10 hover:text-white" aria-label="Twitter">
+                  <Twitter className="h-4 w-4" />
+                </Link>
+                <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/10 p-2 text-slate-300 hover:bg-white/10 hover:text-white" aria-label="LinkedIn">
+                  <Linkedin className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </footer>
+      )
+    }
     return (
       <footer className="border-t border-[#d7deca] bg-[#f4f6ef] text-[#1f2617]">
         <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-8 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
