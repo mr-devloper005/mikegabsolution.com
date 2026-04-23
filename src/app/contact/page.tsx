@@ -1,110 +1,123 @@
-import { Building2, FileText, Image as ImageIcon, Mail, MapPin, Phone, Sparkles, Bookmark } from 'lucide-react'
+import Link from 'next/link'
+import { Clock, Mail, MapPin, MessageSquare, Phone, Send, Sparkles } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { SITE_CONFIG } from '@/lib/site-config'
-import { getFactoryState } from '@/design/factory/get-factory-state'
-import { getProductKind } from '@/design/factory/get-product-kind'
+import { classifieds } from '@/lib/classifieds-theme'
+import { cn } from '@/lib/utils'
 import { CONTACT_PAGE_OVERRIDE_ENABLED, ContactPageOverride } from '@/overrides/contact-page'
 
-function getTone(kind: ReturnType<typeof getProductKind>) {
-  if (kind === 'directory') {
-    return {
-      shell: 'bg-[#f8fbff] text-slate-950',
-      panel: 'border border-slate-200 bg-white',
-      soft: 'border border-slate-200 bg-slate-50',
-      muted: 'text-slate-600',
-      action: 'bg-slate-950 text-white hover:bg-slate-800',
-    }
-  }
-  if (kind === 'editorial') {
-    return {
-      shell: 'bg-[#fbf6ee] text-[#241711]',
-      panel: 'border border-[#dcc8b7] bg-[#fffdfa]',
-      soft: 'border border-[#e6d6c8] bg-[#fff4e8]',
-      muted: 'text-[#6e5547]',
-      action: 'bg-[#241711] text-[#fff1e2] hover:bg-[#3a241b]',
-    }
-  }
-  if (kind === 'visual') {
-    return {
-      shell: 'bg-[#07101f] text-white',
-      panel: 'border border-white/10 bg-white/6',
-      soft: 'border border-white/10 bg-white/5',
-      muted: 'text-slate-300',
-      action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
-    }
-  }
-  return {
-    shell: 'bg-[#f7f1ea] text-[#261811]',
-    panel: 'border border-[#ddcdbd] bg-[#fffaf4]',
-    soft: 'border border-[#e8dbce] bg-[#f3e8db]',
-    muted: 'text-[#71574a]',
-    action: 'bg-[#5b2b3b] text-[#fff0f5] hover:bg-[#74364b]',
-  }
-}
+const lanes = [
+  {
+    icon: MessageSquare,
+    title: 'Listing & account help',
+    body: 'Trouble publishing, editing photos, or verifying your email—we will walk you through the fix.',
+  },
+  {
+    icon: Phone,
+    title: 'Trust & safety',
+    body: 'Report scams, harassment, or policy violations. Include listing URLs when possible.',
+  },
+  {
+    icon: MapPin,
+    title: 'Partnerships',
+    body: `Programs, schools, and neighborhoods that want to bring ${SITE_CONFIG.name} to more locals.`,
+  },
+] as const
 
 export default function ContactPage() {
   if (CONTACT_PAGE_OVERRIDE_ENABLED) {
     return <ContactPageOverride />
   }
 
-  const { recipe } = getFactoryState()
-  const productKind = getProductKind(recipe)
-  const tone = getTone(productKind)
-  const lanes =
-    productKind === 'directory'
-      ? [
-          { icon: Building2, title: 'Business onboarding', body: 'Add listings, verify operational details, and bring your business surface live quickly.' },
-          { icon: Phone, title: 'Partnership support', body: 'Talk through bulk publishing, local growth, and operational setup questions.' },
-          { icon: MapPin, title: 'Coverage requests', body: 'Need a new geography or category lane? We can shape the directory around it.' },
-        ]
-      : productKind === 'editorial'
-        ? [
-            { icon: FileText, title: 'Editorial submissions', body: 'Pitch essays, columns, and long-form ideas that fit the publication.' },
-            { icon: Mail, title: 'Newsletter partnerships', body: 'Coordinate sponsorships, collaborations, and issue-level campaigns.' },
-            { icon: Sparkles, title: 'Contributor support', body: 'Get help with voice, formatting, and publication workflow questions.' },
-          ]
-        : productKind === 'visual'
-          ? [
-              { icon: ImageIcon, title: 'Creator collaborations', body: 'Discuss gallery launches, creator features, and visual campaigns.' },
-              { icon: Sparkles, title: 'Licensing and use', body: 'Reach out about usage rights, commercial requests, and visual partnerships.' },
-              { icon: Mail, title: 'Media kits', body: 'Request creator decks, editorial support, or visual feature placement.' },
-            ]
-          : [
-              { icon: Bookmark, title: 'Collection submissions', body: 'Suggest resources, boards, and links that deserve a place in the library.' },
-              { icon: Mail, title: 'Resource partnerships', body: 'Coordinate curation projects, reference pages, and link programs.' },
-              { icon: Sparkles, title: 'Curator support', body: 'Need help organizing shelves, collections, or profile-connected boards?' },
-            ]
-
   return (
-    <div className={`min-h-screen ${tone.shell}`}>
+    <div className="min-h-screen bg-[linear-gradient(180deg,#f4fbfd_0%,#ffffff_50%)] text-slate-950">
       <NavbarShell />
-      <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <section className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Contact {SITE_CONFIG.name}</p>
-            <h1 className="mt-4 text-5xl font-semibold tracking-[-0.05em]">A support page that matches the product, not a generic contact form.</h1>
-            <p className={`mt-5 max-w-2xl text-sm leading-8 ${tone.muted}`}>Tell us what you are trying to publish, fix, or launch. We will route it through the right lane instead of forcing every request into the same support bucket.</p>
-            <div className="mt-8 space-y-4">
-              {lanes.map((lane) => (
-                <div key={lane.title} className={`rounded-[1.6rem] p-5 ${tone.soft}`}>
-                  <lane.icon className="h-5 w-5" />
-                  <h2 className="mt-3 text-xl font-semibold">{lane.title}</h2>
-                  <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{lane.body}</p>
-                </div>
-              ))}
+      <main>
+        <section className="relative overflow-hidden border-b border-slate-200/60 bg-white/70">
+          <div className="pointer-events-none absolute -left-16 top-10 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(167,139,250,0.2),transparent_70%)] blur-2xl" />
+          <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-18">
+            <span className={classifieds.badge}>
+              <Sparkles className="h-3.5 w-3.5" />
+              Contact
+            </span>
+            <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">We are here for buyers, sellers, and community partners</h1>
+            <p className={cn('mt-5 max-w-2xl text-base leading-8', classifieds.muted)}>
+              Share enough context that we can route your message correctly the first time. Most questions about listings or accounts are answered within one business day.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4 text-sm">
+              <span className={cn(classifieds.soft, 'inline-flex items-center gap-2 px-4 py-2 font-medium text-slate-800')}>
+                <Mail className="h-4 w-4 text-[#12B5D4]" />
+                hello@{SITE_CONFIG.domain}
+              </span>
+              <span className={cn(classifieds.soft, 'inline-flex items-center gap-2 px-4 py-2 font-medium text-slate-800')}>
+                <Clock className="h-4 w-4 text-[#12B5D4]" />
+                Mon–Fri, 9am–6pm local
+              </span>
             </div>
           </div>
+        </section>
 
-          <div className={`rounded-[2rem] p-7 ${tone.panel}`}>
-            <h2 className="text-2xl font-semibold">Send a message</h2>
-            <form className="mt-6 grid gap-4">
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Your name" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="What do you need help with?" />
-              <textarea className="min-h-[180px] rounded-2xl border border-current/10 bg-transparent px-4 py-3 text-sm" placeholder="Share the full context so we can respond with the right next step." />
-              <button type="submit" className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${tone.action}`}>Send message</button>
-            </form>
+        <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-stretch">
+            <div className="space-y-5">
+              {lanes.map((lane) => (
+                <div key={lane.title} className={cn(classifieds.panel, 'p-6')}>
+                  <lane.icon className="h-6 w-6 text-[#12B5D4]" />
+                  <h2 className="mt-3 text-xl font-semibold text-slate-950">{lane.title}</h2>
+                  <p className={cn('mt-2 text-sm leading-7', classifieds.muted)}>{lane.body}</p>
+                </div>
+              ))}
+              <div className={cn(classifieds.soft, 'p-6')}>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#0a6f82]">Self-serve</p>
+                <p className={cn('mt-2 text-sm leading-7', classifieds.muted)}>
+                  Many answers live in the Help Center—pricing, safety, and how listings work.
+                </p>
+                <Link href="/help" className="mt-4 inline-flex text-sm font-semibold text-[#0a6f82] hover:underline">
+                  Visit Help Center →
+                </Link>
+              </div>
+            </div>
+
+            <div className={cn(classifieds.panel, 'p-8 lg:p-10')}>
+              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">Send a message</h2>
+              <p className={cn('mt-2 text-sm', classifieds.muted)}>All fields help us respond faster.</p>
+              <form className="mt-8 grid gap-4">
+                <div>
+                  <label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Name</label>
+                  <input
+                    className="mt-2 h-12 w-full rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none ring-[#12B5D4]/30 focus:ring-2"
+                    placeholder="Your full name"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Email</label>
+                  <input
+                    type="email"
+                    className="mt-2 h-12 w-full rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none ring-[#12B5D4]/30 focus:ring-2"
+                    placeholder="you@example.com"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Topic</label>
+                  <input
+                    className="mt-2 h-12 w-full rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none ring-[#12B5D4]/30 focus:ring-2"
+                    placeholder="e.g. Listing removed, payment question"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Message</label>
+                  <textarea
+                    className="mt-2 min-h-[180px] w-full rounded-[1.5rem] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none ring-[#12B5D4]/30 focus:ring-2"
+                    placeholder="What happened, what did you expect, and any links or screenshots that help."
+                  />
+                </div>
+                <button type="button" className={cn(classifieds.pill, 'inline-flex h-12 w-full items-center justify-center sm:w-auto')}>
+                  <Send className="mr-2 h-4 w-4" />
+                  Send message
+                </button>
+              </form>
+            </div>
           </div>
         </section>
       </main>

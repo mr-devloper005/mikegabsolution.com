@@ -1,22 +1,22 @@
-import Link from 'next/link'
-import { Bookmark, Building2, FileText, Image as ImageIcon, Sparkles } from 'lucide-react'
+import { Tag, Sparkles, ListChecks, Bookmark, FileText, Image as ImageIcon } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { getProductKind } from '@/design/factory/get-product-kind'
 import { REGISTER_PAGE_OVERRIDE_ENABLED, RegisterPageOverride } from '@/overrides/register-page'
+import { RegisterForm } from '@/components/auth/register-form'
 
 function getRegisterConfig(kind: ReturnType<typeof getProductKind>) {
   if (kind === 'directory') {
     return {
-      shell: 'bg-[#f8fbff] text-slate-950',
-      panel: 'border border-slate-200 bg-white',
-      side: 'border border-slate-200 bg-slate-50',
+      shell: 'bg-[linear-gradient(180deg,#f4fbfd_0%,#ffffff_100%)] text-slate-950',
+      panel: 'border border-slate-200/80 bg-white shadow-[0_24px_70px_rgba(15,23,42,0.08)]',
+      side: 'border border-slate-200/80 bg-white/90 shadow-sm',
       muted: 'text-slate-600',
-      action: 'bg-slate-950 text-white hover:bg-slate-800',
-      icon: Building2,
-      title: 'Create a business-ready account',
-      body: 'List services, manage locations, and activate trust signals with a proper directory workflow.',
+      action: 'bg-[#12B5D4] text-white hover:bg-[#0fa3bf]',
+      icon: Tag,
+      title: 'Create your seller profile in minutes',
+      body: 'Post photos, set a fair price, and reach serious local buyers without paying upfront listing fees.',
     }
   }
   if (kind === 'editorial') {
@@ -64,6 +64,7 @@ export default function RegisterPage() {
   const productKind = getProductKind(recipe)
   const config = getRegisterConfig(productKind)
   const Icon = config.icon
+  const isDirectory = productKind === 'directory'
 
   return (
     <div className={`min-h-screen ${config.shell}`}>
@@ -71,32 +72,38 @@ export default function RegisterPage() {
       <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <section className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
           <div className={`rounded-[2rem] p-8 ${config.side}`}>
-            <Icon className="h-8 w-8" />
+            <Icon className={isDirectory ? 'h-8 w-8 text-[#12B5D4]' : 'h-8 w-8'} />
             <h1 className="mt-5 text-4xl font-semibold tracking-[-0.05em]">{config.title}</h1>
             <p className={`mt-5 text-sm leading-8 ${config.muted}`}>{config.body}</p>
-            <div className="mt-8 grid gap-4">
-              {['Different onboarding per product family', 'No repeated one-size-fits-all shell', 'Profile, publishing, and discovery aligned'].map((item) => (
-                <div key={item} className="rounded-[1.5rem] border border-current/10 px-4 py-4 text-sm">{item}</div>
-              ))}
-            </div>
+            {isDirectory ? (
+              <div className="mt-8 grid gap-4">
+                {[
+                  { t: 'Free to start', d: 'List essentials without a credit card on file.', Icon: Sparkles },
+                  { t: 'Guided listing steps', d: 'Photo tips, pricing nudges, and safer meetup reminders.', Icon: ListChecks },
+                ].map((item) => (
+                  <div key={item.t} className="flex gap-3 rounded-[1.5rem] border border-slate-200/80 bg-white/80 px-4 py-4 text-sm">
+                    <item.Icon className="mt-0.5 h-5 w-5 shrink-0 text-[#12B5D4]" />
+                    <div>
+                      <p className="font-semibold text-slate-900">{item.t}</p>
+                      <p className="mt-1 text-slate-600">{item.d}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="mt-8 grid gap-4">
+                {['Different onboarding per product family', 'No repeated one-size-fits-all shell', 'Profile, publishing, and discovery aligned'].map((item) => (
+                  <div key={item} className="rounded-[1.5rem] border border-current/10 px-4 py-4 text-sm">
+                    {item}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className={`rounded-[2rem] p-8 ${config.panel}`}>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Create account</p>
-            <form className="mt-6 grid gap-4">
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Full name" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Email address" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="Password" type="password" />
-              <input className="h-12 rounded-xl border border-current/10 bg-transparent px-4 text-sm" placeholder="What are you creating or publishing?" />
-              <button type="submit" className={`inline-flex h-12 items-center justify-center rounded-full px-6 text-sm font-semibold ${config.action}`}>Create account</button>
-            </form>
-            <div className={`mt-6 flex items-center justify-between text-sm ${config.muted}`}>
-              <span>Already have an account?</span>
-              <Link href="/login" className="inline-flex items-center gap-2 font-semibold hover:underline">
-                <Sparkles className="h-4 w-4" />
-                Sign in
-              </Link>
-            </div>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#0a6f82]">Create account</p>
+            <RegisterForm actionClass={config.action} />
           </div>
         </section>
       </main>
