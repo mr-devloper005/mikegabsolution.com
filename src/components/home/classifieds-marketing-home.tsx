@@ -79,7 +79,7 @@ export function ClassifiedsMarketingHome({ classifiedPosts }: { classifiedPosts:
   const route = SITE_CONFIG.tasks.find((t) => t.key === 'classified')?.route || '/classifieds'
 
   return (
-    <main className={classifieds.shell}>
+    <div className={classifieds.shell}>
       <section className="relative overflow-hidden bg-[linear-gradient(180deg,#f4fbfd_0%,#ffffff_55%)]">
         <div className="pointer-events-none absolute -right-24 top-10 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(18,181,212,0.35),transparent_68%)] blur-2xl" />
         <div className="pointer-events-none absolute -left-16 bottom-0 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(167,139,250,0.25),transparent_70%)] blur-2xl" />
@@ -280,16 +280,6 @@ export function ClassifiedsMarketingHome({ classifiedPosts }: { classifiedPosts:
                 ))}
               </div>
               <p className="mt-4 text-sm leading-7 text-slate-800">&ldquo;{item.quote}&rdquo;</p>
-              <div className="mt-6 flex items-center gap-3">
-                <div className="relative h-11 w-11 overflow-hidden rounded-full border border-slate-200">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={item.avatar} alt="" className="h-full w-full object-cover" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-slate-900">{item.name}</p>
-                  <p className="text-xs text-slate-500">{item.place}</p>
-                </div>
-              </div>
             </div>
           ))}
         </div>
@@ -329,30 +319,6 @@ export function ClassifiedsMarketingHome({ classifiedPosts }: { classifiedPosts:
         </div>
       </section>
 
-      <section className="bg-[#f4fbfd] py-16">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
-          <div className="relative flex justify-center">
-            <div className="absolute inset-0 -z-10 mx-auto max-w-sm rounded-full bg-[radial-gradient(circle,rgba(18,181,212,0.35),transparent_65%)] blur-2xl" />
-            <div className="relative w-full max-w-xs rounded-[2.5rem] border border-slate-200 bg-white p-6 shadow-[0_30px_80px_rgba(15,23,42,0.12)]">
-              <div className="mx-auto aspect-square max-w-[220px] rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <div className="flex h-full w-full items-center justify-center rounded-xl bg-white text-xs font-semibold text-slate-500">Scan to open app</div>
-              </div>
-              <p className="mt-4 text-center text-xs text-slate-500">QR preview for marketing — download links below.</p>
-            </div>
-          </div>
-          <div>
-            <p className={classifieds.badge}>On the go</p>
-            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-slate-950">Get the app</h2>
-            <p className={cn('mt-4 text-base leading-8', classifieds.muted)}>
-              Save searches, reply faster, and get gentle alerts when new listings match what you are hunting for.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <span className="inline-flex items-center justify-center rounded-full border border-slate-900 bg-slate-900 px-5 py-3 text-xs font-semibold text-white">Download on the App Store</span>
-              <span className="inline-flex items-center justify-center rounded-full border border-slate-900 bg-slate-900 px-5 py-3 text-xs font-semibold text-white">Get it on Google Play</span>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+      </div>
   )
 }
