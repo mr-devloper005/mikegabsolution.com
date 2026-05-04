@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import { ArrowRight, Globe, Mail, MapPin, Phone, ShieldCheck, Tag } from 'lucide-react'
-import { ContentImage } from '@/components/shared/content-image'
 import { SchemaJsonLd } from '@/components/seo/schema-jsonld'
 import { TaskPostCard } from '@/components/shared/task-post-card'
+import { ClassifiedContactActions } from '@/components/tasks/classified-contact-actions'
+import { RichContent, formatRichHtml } from '@/components/shared/rich-content'
+import { DirectoryImageGallery } from '@/design/products/directory/directory-image-gallery'
 import type { SitePost } from '@/lib/site-connector'
 import type { TaskKey } from '@/lib/site-config'
 
@@ -33,6 +35,7 @@ export function DirectoryTaskDetailPage({
   const phone = typeof content.phone === 'string' ? content.phone : ''
   const email = typeof content.email === 'string' ? content.email : ''
   const highlights = Array.isArray(content.highlights) ? content.highlights.filter((item): item is string => typeof item === 'string') : []
+  const descriptionHtml = formatRichHtml(description, 'Details coming soon.')
   const schemaPayload = {
     '@context': 'https://schema.org',
     '@type': task === 'profile' ? 'Organization' : 'LocalBusiness',
@@ -50,37 +53,26 @@ export function DirectoryTaskDetailPage({
       <SchemaJsonLd data={schemaPayload} />
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <Link href={taskRoute} className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-950">
-          ← Back to {taskLabel}
+          {'\u2190'} Back to {taskLabel}
         </Link>
 
-        <section className="grid gap-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-start">
+        <section className="grid gap-8 lg:grid-cols-[1.06fr_0.94fr] lg:items-start">
           <div>
-            <div className="overflow-hidden rounded-[2.2rem] border border-slate-200 bg-white shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
-              <div className="relative h-[420px] overflow-hidden bg-slate-100">
-                <ContentImage src={images[0]} alt={post.title} fill className="object-cover" />
-              </div>
-              {images.length > 1 ? (
-                <div className="grid grid-cols-4 gap-3 p-4">
-                  {images.slice(1, 5).map((image) => (
-                    <div key={image} className="relative h-24 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
-                      <ContentImage src={image} alt={post.title} fill className="object-cover" />
-                    </div>
-                  ))}
-                </div>
-              ) : null}
-            </div>
+            <DirectoryImageGallery images={images} title={post.title} />
 
             <div className="mt-8 rounded-[2rem] border border-slate-200 bg-white p-7 shadow-[0_20px_60px_rgba(15,23,42,0.06)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">About this {task}</p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">Structured details instead of a generic content block.</h2>
-              <p className="mt-4 text-sm leading-8 text-slate-600">{description}</p>
+              <h2 className="text-2xl font-semibold tracking-[-0.03em]">Product Description</h2>
+              <RichContent html={descriptionHtml} className="mt-4 text-sm leading-8 text-slate-600 prose-p:my-4 prose-a:text-slate-950 prose-a:underline-offset-4 hover:prose-a:underline" />
               {highlights.length ? (
-                <div className="mt-6 grid gap-3 md:grid-cols-2">
-                  {highlights.slice(0, 4).map((item) => (
-                    <div key={item} className="rounded-[1.4rem] border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-700">
-                      {item}
-                    </div>
-                  ))}
+                <div className="mt-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Highlights</p>
+                  <div className="mt-4 grid gap-3 md:grid-cols-2">
+                    {highlights.slice(0, 6).map((item) => (
+                      <div key={item} className="rounded-[1.4rem] border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-700">
+                        {item}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ) : null}
             </div>
@@ -99,16 +91,55 @@ export function DirectoryTaskDetailPage({
               </div>
 
               <div className="mt-6 grid gap-3">
-                {location ? <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700"><MapPin className="h-4 w-4" /> {location}</div> : null}
-                {phone ? <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700"><Phone className="h-4 w-4" /> {phone}</div> : null}
-                {email ? <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700"><Mail className="h-4 w-4" /> {email}</div> : null}
-                {website ? <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700"><Globe className="h-4 w-4" /> {website}</div> : null}
+                {location ? (
+                  <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                    <MapPin className="h-4 w-4" /> {location}
+                  </div>
+                ) : null}
+
+                {task === 'classified' ? (
+                  <ClassifiedContactActions phone={phone} email={email} website={website} />
+                ) : (
+                  <>
+                    {phone ? (
+                      <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                        <Phone className="h-4 w-4" /> {phone}
+                      </div>
+                    ) : null}
+                    {email ? (
+                      <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                        <Mail className="h-4 w-4" /> {email}
+                      </div>
+                    ) : null}
+                    {website ? (
+                      <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                        <Globe className="h-4 w-4" /> {website}
+                      </div>
+                    ) : null}
+                  </>
+                )}
               </div>
 
-              <div className="mt-6 flex flex-wrap gap-3">
-                {website ? <a href={website} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800">Visit website <ArrowRight className="h-4 w-4" /></a> : null}
-                <Link href={taskRoute} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-100">Browse more</Link>
-              </div>
+              {task === 'classified' ? null : (
+                <div className="mt-6 flex flex-wrap gap-3">
+                  {website ? (
+                    <a
+                      href={website}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800"
+                    >
+                      Visit website <ArrowRight className="h-4 w-4" />
+                    </a>
+                  ) : null}
+                  <Link
+                    href={taskRoute}
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-100"
+                  >
+                    Browse more
+                  </Link>
+                </div>
+              )}
             </div>
 
             {mapEmbedUrl ? (

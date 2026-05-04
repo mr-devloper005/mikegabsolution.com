@@ -11,6 +11,7 @@ import { buildPostUrl, fetchTaskPostBySlug, fetchTaskPosts } from "@/lib/task-da
 import { SITE_CONFIG, getTaskConfig, type TaskKey } from "@/lib/site-config";
 import type { SitePost } from "@/lib/site-connector";
 import { TaskImageCarousel } from "@/components/tasks/task-image-carousel";
+import { ArticleFeaturedImage } from "@/components/tasks/article-featured-image";
 import { cn } from "@/lib/utils";
 import { ArticleComments } from "@/components/tasks/article-comments";
 import { SchemaJsonLd } from "@/components/seo/schema-jsonld";
@@ -19,6 +20,7 @@ import { getFactoryState } from "@/design/factory/get-factory-state";
 import { getProductKind } from "@/design/factory/get-product-kind";
 import { DirectoryTaskDetailPage } from "@/design/products/directory/task-detail-page";
 import { TASK_DETAIL_PAGE_OVERRIDE_ENABLED, TaskDetailPageOverride } from "@/overrides/task-detail-page";
+import { ClassifiedContactActions } from "@/components/tasks/classified-contact-actions";
 
 type PostContent = {
   category?: string;
@@ -292,16 +294,10 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                   <p className="text-base leading-7 text-muted-foreground">{articleSummary}</p>
                 ) : null}
                 {images[0] ? (
-                  <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl border border-border bg-muted">
-                    <ContentImage
-                      src={images[0]}
-                      alt={`${post.title} featured image`}
-                      fill
-                      className="object-cover"
-                      intrinsicWidth={1600}
-                      intrinsicHeight={900}
-                    />
-                  </div>
+                  <ArticleFeaturedImage
+                    src={images[0]}
+                    alt={`${post.title} featured image`}
+                  />
                 ) : null}
                 <RichContent html={articleHtml} className="leading-8 prose-p:my-6 prose-h2:my-8 prose-h3:my-6 prose-ul:my-6" />
                 <ArticleComments slug={post.slug} />
@@ -310,76 +306,115 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
 
             {!isArticle ? (
               <>
-                {!isBookmark ? (
-                  <div className={cn(isClassified ? "w-full" : "")}>
-                    <TaskImageCarousel images={images} />
-                  </div>
-                ) : null}
+                {isClassified ? (
+                  <div className="mx-auto w-full max-w-6xl">
+                    <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+                      {!isBookmark ? (
+                        <div className="overflow-hidden rounded-3xl border border-border bg-card">
+                          <div className="p-4 sm:p-5">
+                            <TaskImageCarousel images={images} />
+                          </div>
+                        </div>
+                      ) : null}
 
-                <div className={cn(isClassified ? "mx-auto w-full max-w-4xl" : "mt-6")}>
-                  <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                    <Badge variant="secondary" className="inline-flex items-center gap-1">
-                      <Tag className="h-3.5 w-3.5" />
-                      {category}
-                    </Badge>
-                    {location && (
-                      <span className="inline-flex items-center gap-1">
-                        <MapPin className="h-4 w-4" />
-                        {location}
-                      </span>
-                    )}
+                      <div className="space-y-5">
+                        <div className="space-y-3 rounded-3xl border border-border bg-card p-6">
+                          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                            <Badge variant="secondary" className="inline-flex items-center gap-1">
+                              <Tag className="h-3.5 w-3.5" />
+                              {category}
+                            </Badge>
+                            {location ? (
+                              <span className="inline-flex items-center gap-1">
+                                <MapPin className="h-4 w-4" />
+                                {location}
+                              </span>
+                            ) : null}
+                          </div>
+                          <h1 className="text-3xl font-semibold leading-tight text-foreground">
+                            {post.title}
+                          </h1>
+                          <p className="text-sm text-muted-foreground">
+                            {taskConfig?.label || "Classified"} details
+                          </p>
+                        </div>
+
+                        <div className="rounded-3xl border border-border bg-card p-6">
+                          <p className="text-sm font-semibold text-foreground">Contact</p>
+                          <ClassifiedContactActions
+                            className="mt-4"
+                            phone={content.phone}
+                            email={content.email}
+                            website={content.website}
+                          />
+                        </div>
+
+                        {mapEmbedUrl ? (
+                          <div className="rounded-3xl border border-border bg-card p-4">
+                            <p className="px-2 text-sm font-semibold text-foreground">Location map</p>
+                            <div className="mt-4 overflow-hidden rounded-2xl border border-border">
+                              <iframe
+                                title="Business location map"
+                                src={mapEmbedUrl}
+                                className="h-56 w-full"
+                                loading="lazy"
+                              />
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+
+                    <section className="mt-10 rounded-3xl border border-border bg-card p-6">
+                      <h2 className="text-lg font-semibold text-foreground">Description</h2>
+                      <RichContent html={descriptionHtml} className="mt-3 leading-7" />
+                      {content.highlights?.length ? (
+                        <div className="mt-8">
+                          <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                            Highlights
+                          </h3>
+                          <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                            {content.highlights.map((item) => (
+                              <li key={item} className="flex gap-2">
+                                <span className="mt-1 h-1.5 w-1.5 flex-none rounded-full bg-muted-foreground/50" />
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : null}
+                    </section>
                   </div>
-                  <h1 className="mt-4 text-3xl font-semibold text-foreground">{post.title}</h1>
-                  <RichContent html={descriptionHtml} className="mt-3 max-w-3xl" />
-                </div>
+                ) : (
+                  <>
+                    {!isBookmark ? (
+                      <div className={cn(isClassified ? "w-full" : "")}>
+                        <TaskImageCarousel images={images} />
+                      </div>
+                    ) : null}
+
+                    <div className={cn(isClassified ? "mx-auto w-full max-w-4xl" : "mt-6")}>
+                      <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                        <Badge variant="secondary" className="inline-flex items-center gap-1">
+                          <Tag className="h-3.5 w-3.5" />
+                          {category}
+                        </Badge>
+                        {location && (
+                          <span className="inline-flex items-center gap-1">
+                            <MapPin className="h-4 w-4" />
+                            {location}
+                          </span>
+                        )}
+                      </div>
+                      <h1 className="mt-4 text-3xl font-semibold text-foreground">{post.title}</h1>
+                      <RichContent html={descriptionHtml} className="mt-3 max-w-3xl" />
+                    </div>
+                  </>
+                )}
               </>
             ) : null}
 
-            {isClassified ? (
-              <div className="mx-auto w-full max-w-4xl rounded-2xl border border-border bg-card p-6">
-                <h2 className="text-lg font-semibold text-foreground">Business details</h2>
-                <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-                  {content.website && (
-                    <div className="flex items-start gap-2">
-                      <Globe className="mt-0.5 h-4 w-4" />
-                      <a
-                        href={content.website}
-                        className="break-all text-foreground hover:underline"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {content.website}
-                      </a>
-                    </div>
-                  )}
-                  {content.phone && (
-                    <div className="flex items-start gap-2">
-                      <Phone className="mt-0.5 h-4 w-4" />
-                      <span>{content.phone}</span>
-                    </div>
-                  )}
-                  {content.email && (
-                    <div className="flex items-start gap-2">
-                      <Mail className="mt-0.5 h-4 w-4" />
-                      <a
-                        href={`mailto:${content.email}`}
-                        className="break-all text-foreground hover:underline"
-                      >
-                        {content.email}
-                      </a>
-                    </div>
-                  )}
-                  {location && (
-                    <div className="flex items-start gap-2">
-                      <MapPin className="mt-0.5 h-4 w-4" />
-                      <span>{location}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ) : null}
-
-            {content.highlights?.length && !isArticle ? (
+            {content.highlights?.length && !isArticle && !isClassified ? (
               <div className={cn("mt-8 rounded-2xl border border-border bg-card p-6", isClassified ? "mx-auto w-full max-w-4xl" : "")}>
                 <h2 className="text-lg font-semibold text-foreground">Highlights</h2>
                 <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
@@ -390,7 +425,7 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
               </div>
             ) : null}
 
-            {isClassified && mapEmbedUrl ? (
+            {!isClassified && mapEmbedUrl ? (
               <div className="mx-auto w-full max-w-4xl rounded-2xl border border-border bg-card p-4">
                 <p className="text-sm font-semibold text-foreground">Location map</p>
                 <div className="mt-4 overflow-hidden rounded-xl border border-border">

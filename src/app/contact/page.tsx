@@ -30,6 +30,9 @@ export default function ContactPage() {
     return <ContactPageOverride />
   }
 
+  const contactEmail =
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || `hello@${SITE_CONFIG.domain}`
+
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,#f4fbfd_0%,#ffffff_50%)] text-slate-950">
       <NavbarShell />
@@ -46,10 +49,16 @@ export default function ContactPage() {
               Share enough context that we can route your message correctly the first time. Most questions about listings or accounts are answered within one business day.
             </p>
             <div className="mt-8 flex flex-wrap gap-4 text-sm">
-              <span className={cn(classifieds.soft, 'inline-flex items-center gap-2 px-4 py-2 font-medium text-slate-800')}>
+              <Link
+                href={`mailto:${contactEmail}`}
+                className={cn(
+                  classifieds.soft,
+                  'inline-flex items-center gap-2 px-4 py-2 font-medium text-slate-800 hover:bg-slate-100'
+                )}
+              >
                 <Mail className="h-4 w-4 text-[#12B5D4]" />
-                hello@{SITE_CONFIG.domain}
-              </span>
+                Email us: {contactEmail}
+              </Link>
               <span className={cn(classifieds.soft, 'inline-flex items-center gap-2 px-4 py-2 font-medium text-slate-800')}>
                 <Clock className="h-4 w-4 text-[#12B5D4]" />
                 Mon–Fri, 9am–6pm local
