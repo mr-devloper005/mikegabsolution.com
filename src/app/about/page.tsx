@@ -68,27 +68,6 @@ export default function AboutPage() {
           ))}
         </div>
       </div>
-
-      <div className="mt-10 grid gap-6 md:grid-cols-3">
-        {mockTeamMembers.map((member) => (
-          <Card key={member.id} className="border-slate-200/80 bg-white shadow-sm transition-transform hover:-translate-y-1">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12 border border-slate-200">
-                  <AvatarImage src={member.avatar} alt={member.name} />
-                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-semibold text-slate-950">{member.name}</p>
-                  <p className="text-xs text-slate-500">{member.role}</p>
-                </div>
-              </div>
-              <p className="mt-3 text-sm leading-7 text-slate-600">{member.bio}</p>
-              <p className="mt-3 text-xs text-slate-500">{member.location}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
     </PageShell>
   )
 }

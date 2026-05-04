@@ -74,7 +74,7 @@ export function Footer() {
                   </div>
                   <span className="text-lg font-semibold text-white">{SITE_CONFIG.name}</span>
                 </Link>
-                <p className="mt-4 text-sm leading-7 text-slate-400">hello@{SITE_CONFIG.domain}</p>
+                <p className="mt-4 text-sm leading-7 text-slate-400">{SITE_CONFIG.contactEmail}</p>
                 <p className="mt-2 text-sm text-slate-400">Local classifieds built for safer meetups and faster replies.</p>
               </div>
               <div>
@@ -110,16 +110,6 @@ export function Footer() {
                     </li>
                   ))}
                 </ul>
-              </div>
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">Newsletter</h3>
-                <p className="mt-4 text-sm text-slate-400">Subscribe for weekly picks and safety reminders.</p>
-                <div className="mt-4 flex rounded-full border border-white/10 bg-black/30 p-1">
-                  <input type="email" placeholder="Email address" className="min-w-0 flex-1 bg-transparent px-4 text-sm text-white outline-none placeholder:text-slate-500" readOnly aria-label="Newsletter email" />
-                  <button type="button" className="rounded-full bg-[#12B5D4] px-4 py-2 text-sm font-semibold text-white">
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
-                </div>
               </div>
             </div>
             <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm text-slate-500 sm:flex-row">
