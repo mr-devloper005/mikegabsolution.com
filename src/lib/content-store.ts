@@ -20,11 +20,11 @@ export function saveStoredListings(listings: Listing[]) {
 }
 
 export function loadStoredAds(): ClassifiedAd[] {
-  return loadFromStorage<ClassifiedAd[]>(storageKeys.ads, [])
+  return []
 }
 
 export function saveStoredAds(ads: ClassifiedAd[]) {
-  saveToStorage(storageKeys.ads, ads)
+  void ads
 }
 
 export function loadStoredBookmarks(): Bookmark[] {

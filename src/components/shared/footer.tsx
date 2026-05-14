@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { FileText, Building2, LayoutGrid, Tag, Github, Twitter, Linkedin, Facebook, Image as ImageIcon, User, ArrowRight, Sparkles } from 'lucide-react'
+import { FileText, Building2, LayoutGrid, Tag, Github, Twitter, Linkedin, Image as ImageIcon, User, ArrowRight, Sparkles } from 'lucide-react'
 import { SITE_CONFIG, type TaskKey } from '@/lib/site-config'
 import { siteContent } from '@/config/site.content'
 import { getFactoryState } from '@/design/factory/get-factory-state'
@@ -26,7 +26,7 @@ const footerLinks = {
     icon: taskIcons[task.key] || LayoutGrid,
   })),
   company: [
-    { name: 'About', href: '/about' },
+    { name: 'About Us', href: '/about' },
     { name: 'Team', href: '/team' },
     { name: 'Careers', href: '/careers' },
     { name: 'Blog', href: '/blog' },
@@ -35,7 +35,6 @@ const footerLinks = {
   resources: [
     { name: 'Help Center', href: '/help' },
     { name: 'Community', href: '/community' },
-    { name: 'Developers', href: '/developers' },
     { name: 'Status', href: '/status' },
   ],
   legal: [
@@ -69,12 +68,9 @@ export function Footer() {
             <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
               <div>
                 <Link href="/" className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-1">
-                    <img src="/favicon.png?v=20260401" alt="" width="40" height="40" className="h-full w-full object-contain" />
-                  </div>
+                  <img src="/favicon.png?v=20260401" alt="" width="40" height="40" className="h-10 w-10 object-contain" />
                   <span className="text-lg font-semibold text-white">{SITE_CONFIG.name}</span>
                 </Link>
-                <p className="mt-4 text-sm leading-7 text-slate-400">{SITE_CONFIG.contactEmail}</p>
                 <p className="mt-2 text-sm text-slate-400">Local classifieds built for safer meetups and faster replies.</p>
               </div>
               <div>
@@ -83,8 +79,7 @@ export function Footer() {
                   {[
                     { name: 'Home', href: '/' },
                     { name: 'Categories', href: '/classifieds' },
-                    { name: 'Pricing', href: '/pricing' },
-                    { name: 'Safety tips', href: '/about' },
+                    { name: 'About Us', href: '/about' },
                   ].map((l) => (
                     <li key={l.name}>
                       <Link href={l.href} className="text-slate-300 hover:text-white">
@@ -114,17 +109,6 @@ export function Footer() {
             </div>
             <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm text-slate-500 sm:flex-row">
               <p>&copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.</p>
-              <div className="flex gap-3">
-                <Link href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/10 p-2 text-slate-300 hover:bg-white/10 hover:text-white" aria-label="Facebook">
-                  <Facebook className="h-4 w-4" />
-                </Link>
-                <Link href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/10 p-2 text-slate-300 hover:bg-white/10 hover:text-white" aria-label="Twitter">
-                  <Twitter className="h-4 w-4" />
-                </Link>
-                <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/10 p-2 text-slate-300 hover:bg-white/10 hover:text-white" aria-label="LinkedIn">
-                  <Linkedin className="h-4 w-4" />
-                </Link>
-              </div>
             </div>
           </div>
         </footer>
@@ -156,9 +140,7 @@ export function Footer() {
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr_1fr]">
             <div className="rounded-[2rem] border border-white/10 bg-white/5 p-7">
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/12 bg-white/8 p-1.5">
-                  <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain" />
-                </div>
+                <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-12 w-12 object-contain" />
                 <div>
                   <p className="text-lg font-semibold">{SITE_CONFIG.name}</p>
                   <p className="text-xs uppercase tracking-[0.24em] text-slate-400">{siteContent.footer.tagline}</p>

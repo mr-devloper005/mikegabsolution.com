@@ -119,11 +119,7 @@ export default function TermsPage() {
               <section id="contact-terms" className="scroll-mt-28 rounded-[2rem] border border-dashed border-[#12B5D4]/40 bg-[#12B5D4]/6 p-8">
                 <h2 className="text-xl font-semibold text-slate-950">Questions about these terms?</h2>
                 <p className={cn('mt-3 text-sm leading-7', classifieds.muted)}>
-                  Write to{' '}
-                  <a href={`mailto:hello@${SITE_CONFIG.domain}`} className="font-semibold text-[#0a6f82] hover:underline">
-                    hello@{SITE_CONFIG.domain}
-                  </a>{' '}
-                  or visit our{' '}
+                  Visit our{' '}
                   <Link href="/contact" className="font-semibold text-[#0a6f82] hover:underline">
                     contact page
                   </Link>

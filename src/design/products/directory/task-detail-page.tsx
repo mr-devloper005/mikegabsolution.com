@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Globe, Mail, MapPin, Phone, ShieldCheck, Tag } from 'lucide-react'
+import { ArrowRight, Globe, MapPin, Phone, ShieldCheck, Tag } from 'lucide-react'
 import { SchemaJsonLd } from '@/components/seo/schema-jsonld'
 import { TaskPostCard } from '@/components/shared/task-post-card'
 import { ClassifiedContactActions } from '@/components/tasks/classified-contact-actions'
@@ -98,17 +98,12 @@ export function DirectoryTaskDetailPage({
                 ) : null}
 
                 {task === 'classified' ? (
-                  <ClassifiedContactActions phone={phone} email={email} website={website} />
+                  <ClassifiedContactActions phone={phone} website={website} />
                 ) : (
                   <>
                     {phone ? (
                       <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
                         <Phone className="h-4 w-4" /> {phone}
-                      </div>
-                    ) : null}
-                    {email ? (
-                      <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
-                        <Mail className="h-4 w-4" /> {email}
                       </div>
                     ) : null}
                     {website ? (
