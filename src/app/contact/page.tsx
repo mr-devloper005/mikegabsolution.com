@@ -1,56 +1,103 @@
-import { Mail, MessageSquareText, ShieldCheck } from 'lucide-react';
+import Link from 'next/link'
+import { Clock, Mail, MapPin, MessageSquare, Phone, Send, Sparkles } from 'lucide-react'
+import { NavbarShell } from '@/components/shared/navbar-shell'
+import { Footer } from '@/components/shared/footer'
+import { SITE_CONFIG } from '@/lib/site-config'
+import { classifieds } from '@/lib/classifieds-theme'
+import { cn } from '@/lib/utils'
+import { CONTACT_PAGE_OVERRIDE_ENABLED, ContactPageOverride } from '@/overrides/contact-page'
+import { ContactLeadForm } from "@/components/shared/contact-lead-form";
 
-import { ContactLeadForm } from '@/components/shared/contact-lead-form';
-import { Footer } from '@/components/shared/footer';
-import { NavbarShell } from '@/components/shared/navbar-shell';
-
-const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Mikegabsolution';
-
-const contactHighlights = [
-  { icon: Mail, title: 'Direct response', copy: 'Your message is saved securely and routed to the right team.' },
-  { icon: MessageSquareText, title: 'Clear details', copy: 'Share your requirement, question, or collaboration idea in one place.' },
-  { icon: ShieldCheck, title: 'Reliable follow-up', copy: 'We keep the request record so every conversation stays traceable.' },
-];
+const lanes = [
+  {
+    icon: MessageSquare,
+    title: 'Listing & account help',
+    body: 'Trouble publishing, editing photos, or verifying your email—we will walk you through the fix.',
+  },
+  {
+    icon: Phone,
+    title: 'Trust & safety',
+    body: 'Report scams, harassment, or policy violations. Include listing URLs when possible.',
+  },
+  {
+    icon: MapPin,
+    title: 'Partnerships',
+    body: `Programs, schools, and neighborhoods that want to bring ${SITE_CONFIG.name} to more locals.`,
+  },
+] as const
 
 export default function ContactPage() {
+  if (CONTACT_PAGE_OVERRIDE_ENABLED) {
+    return <ContactPageOverride />
+  }
+
+  const contactEmail =
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || `hello@${SITE_CONFIG.domain}`
+
   return (
-    <div className="min-h-screen bg-[#f7f1e8] text-stone-950">
+    <div className="min-h-screen bg-[linear-gradient(180deg,#f4fbfd_0%,#ffffff_50%)] text-slate-950">
       <NavbarShell />
       <main>
-        <section className="relative overflow-hidden px-6 py-20 md:px-10 lg:px-16">
-          <div className="absolute left-[-10%] top-10 h-72 w-72 rounded-full bg-amber-200/40 blur-3xl" />
-          <div className="absolute bottom-0 right-[-8%] h-80 w-80 rounded-full bg-stone-300/50 blur-3xl" />
+        <section className="relative overflow-hidden border-b border-slate-200/60 bg-white/70">
+          <div className="pointer-events-none absolute -left-16 top-10 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(167,139,250,0.2),transparent_70%)] blur-2xl" />
+          <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-18">
+            <span className={classifieds.badge}>
+              <Sparkles className="h-3.5 w-3.5" />
+              Contact
+            </span>
+            <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">We are here for buyers, sellers, and community partners</h1>
+            <p className={cn('mt-5 max-w-2xl text-base leading-8', classifieds.muted)}>
+              Share enough context that we can route your message correctly the first time. Most questions about listings or accounts are answered within one business day.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4 text-sm">
+              <Link
+                href={`mailto:${contactEmail}`}
+                className={cn(
+                  classifieds.soft,
+                  'inline-flex items-center gap-2 px-4 py-2 font-medium text-slate-800 hover:bg-slate-100'
+                )}
+              >
+                <Mail className="h-4 w-4 text-[#12B5D4]" />
+                Email us: {contactEmail}
+              </Link>
+              <span className={cn(classifieds.soft, 'inline-flex items-center gap-2 px-4 py-2 font-medium text-slate-800')}>
+                <Clock className="h-4 w-4 text-[#12B5D4]" />
+                Mon–Fri, 9am–6pm local
+              </span>
+            </div>
+          </div>
+        </section>
 
-          <div className="relative mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-            <div>
-              <p className="text-sm font-black uppercase tracking-[0.35em] text-stone-500">Contact</p>
-              <h1 className="mt-5 max-w-3xl text-5xl font-black leading-[0.95] tracking-[-0.06em] text-stone-950 md:text-7xl">
-                Let&apos;s talk about your next move.
-              </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-700">
-                Use this form to reach {siteName}. Your request will be recorded and shared with the support team for follow-up.
-              </p>
-
-              <div className="mt-8 grid gap-4">
-                {contactHighlights.map((item) => (
-                  <div key={item.title} className="flex gap-4 rounded-3xl border border-stone-200 bg-white/60 p-5 shadow-sm">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-stone-950 text-white">
-                      <item.icon className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <h2 className="text-base font-black text-stone-950">{item.title}</h2>
-                      <p className="mt-1 text-sm leading-6 text-stone-600">{item.copy}</p>
-                    </div>
-                  </div>
-                ))}
+        <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-stretch">
+            <div className="space-y-5">
+              {lanes.map((lane) => (
+                <div key={lane.title} className={cn(classifieds.panel, 'p-6')}>
+                  <lane.icon className="h-6 w-6 text-[#12B5D4]" />
+                  <h2 className="mt-3 text-xl font-semibold text-slate-950">{lane.title}</h2>
+                  <p className={cn('mt-2 text-sm leading-7', classifieds.muted)}>{lane.body}</p>
+                </div>
+              ))}
+              <div className={cn(classifieds.soft, 'p-6')}>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#0a6f82]">Self-serve</p>
+                <p className={cn('mt-2 text-sm leading-7', classifieds.muted)}>
+                  Many answers live in the Help Center—pricing, safety, and how listings work.
+                </p>
+                <Link href="/help" className="mt-4 inline-flex text-sm font-semibold text-[#0a6f82] hover:underline">
+                  Visit Help Center →
+                </Link>
               </div>
             </div>
 
-            <ContactLeadForm />
+            <div className={cn(classifieds.panel, 'p-8 lg:p-10')}>
+              <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">Send a message</h2>
+              <p className={cn('mt-2 text-sm', classifieds.muted)}>All fields help us respond faster.</p>
+              <ContactLeadForm />
+            </div>
           </div>
         </section>
       </main>
       <Footer />
     </div>
-  );
+  )
 }
