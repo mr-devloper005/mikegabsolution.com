@@ -89,7 +89,6 @@ const directoryPalette = {
 const classifiedsDirectoryNav = [
   { name: 'Home', href: '/' },
   { name: 'Categories', href: '/classifieds' },
-  { name: 'Pricing', href: '/pricing' },
   { name: 'About Us', href: '/about' },
 ] as const
 

@@ -3,7 +3,6 @@ import {
   ArrowRight,
   MessageCircle,
   ShieldCheck,
-  Sparkles,
   Star,
   BadgeCheck,
   HeartHandshake,
@@ -87,11 +86,7 @@ export function ClassifiedsMarketingHome({ classifiedPosts }: { classifiedPosts:
         <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-22">
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
             <div>
-              <span className={classifieds.badge}>
-                <Sparkles className="h-3.5 w-3.5" />
-                Local classifieds
-              </span>
-              <h1 className="mt-6 max-w-3xl text-5xl font-semibold tracking-[-0.055em] text-slate-950 sm:text-6xl">
+              <h1 className="max-w-3xl text-5xl font-semibold tracking-[-0.055em] text-slate-950 sm:text-6xl">
                 Find what you need, sell what you don&apos;t—right in your neighborhood.
               </h1>
               <p className={cn('mt-6 max-w-2xl text-base leading-8', classifieds.muted)}>{SITE_CONFIG.description}</p>

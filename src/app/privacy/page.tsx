@@ -141,11 +141,7 @@ export default function PrivacyPage() {
                   <h2 className="text-xl font-semibold text-slate-950">Contact</h2>
                 </div>
                 <p className={cn('mt-3 text-sm leading-7', classifieds.muted)}>
-                  Questions about privacy? Reach the team at{' '}
-                  <a href={`mailto:hello@${SITE_CONFIG.domain}`} className="font-semibold text-[#0a6f82] hover:underline">
-                    hello@{SITE_CONFIG.domain}
-                  </a>{' '}
-                  or use the{' '}
+                  Questions about privacy? Use the{' '}
                   <Link href="/contact" className="font-semibold text-[#0a6f82] hover:underline">
                     contact form
                   </Link>
