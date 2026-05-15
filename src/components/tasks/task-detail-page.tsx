@@ -1,7 +1,7 @@
 import { ContentImage } from "@/components/shared/content-image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MapPin, Globe, Phone, Tag, Mail } from "lucide-react";
+import { MapPin, Globe, Phone, Tag } from "lucide-react";
 import { NavbarShell } from "@/components/shared/navbar-shell";
 import { Footer } from "@/components/shared/footer";
 import { TaskPostCard } from "@/components/shared/task-post-card";
@@ -344,7 +344,6 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                           <ClassifiedContactActions
                             className="mt-4"
                             phone={content.phone}
-                            email={content.email}
                             website={content.website}
                           />
                         </div>
@@ -463,17 +462,6 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                     <div className="flex items-start gap-2">
                       <Phone className="mt-0.5 h-4 w-4" />
                       <span>{content.phone}</span>
-                    </div>
-                  )}
-                  {content.email && (
-                    <div className="flex items-start gap-2">
-                      <Mail className="mt-0.5 h-4 w-4" />
-                      <a
-                        href={`mailto:${content.email}`}
-                        className="break-all text-foreground hover:underline"
-                      >
-                        {content.email}
-                      </a>
                     </div>
                   )}
                   {location && (

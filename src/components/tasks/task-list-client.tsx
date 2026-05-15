@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Inbox, Sparkles } from "lucide-react";
 import { TaskPostCard } from "@/components/shared/task-post-card";
@@ -19,7 +19,17 @@ type Props = {
 };
 
 export function TaskListClient({ task, initialPosts, category }: Props) {
-  const localPosts = getLocalPostsForTask(task);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const localPosts = useMemo(() => {
+    if (!mounted) return [];
+    return getLocalPostsForTask(task);
+  }, [mounted, task]);
+
   const isClassified = task === "classified";
 
   const merged = useMemo(() => {

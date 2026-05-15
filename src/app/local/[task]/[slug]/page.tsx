@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { useParams } from "next/navigation";
-import { MapPin, Globe, Phone, Tag, Mail } from "lucide-react";
+import { MapPin, Globe, Phone, Tag } from "lucide-react";
 import { NavbarShell } from "@/components/shared/navbar-shell";
 import { Footer } from "@/components/shared/footer";
 import { TaskImageCarousel } from "@/components/tasks/task-image-carousel";
@@ -218,19 +218,6 @@ export default function LocalPostDetailPage() {
                     <div className="flex items-start gap-2">
                       <Phone className="mt-0.5 h-4 w-4" />
                       <span>{content.phone}</span>
-                    </div>
-                  ) : null}
-                  {content.email ? (
-                    <div className="flex items-start gap-2">
-                      <Mail className="mt-0.5 h-4 w-4" />
-                      <a
-                        href={`mailto:${content.email}`}
-                        className="break-all text-foreground hover:underline"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {content.email}
-                      </a>
                     </div>
                   ) : null}
                   {location ? (

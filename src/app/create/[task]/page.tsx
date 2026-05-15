@@ -390,7 +390,7 @@ export default function CreateTaskPage() {
         )}
       >
         <Save className="h-4 w-4" />
-        Save locally
+        Save
       </button>
       <Button variant="ghost" asChild className="h-12 rounded-full text-[#0a6f82] hover:bg-[#12B5D4]/10">
         <Link href={taskConfig.route} className="inline-flex items-center">
@@ -433,7 +433,6 @@ export default function CreateTaskPage() {
             </div>
             <div className="mt-6 flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-[#12B5D4] px-4 py-1.5 text-xs font-semibold text-white shadow-sm">Classifieds</span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-xs font-semibold text-slate-600">Local-only draft</span>
             </div>
           </div>
         </div>
@@ -501,7 +500,6 @@ export default function CreateTaskPage() {
         <div className="rounded-[2rem] border border-slate-200/80 bg-white/95 p-6 shadow-[0_24px_64px_rgba(15,23,42,0.06)] sm:p-8">
           <div className="flex flex-wrap gap-2">
             <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">{taskConfig.label}</span>
-            <span className="rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-600">Local-only</span>
           </div>
 
           {formFields}

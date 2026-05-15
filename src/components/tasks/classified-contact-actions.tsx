@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Globe, Mail, Phone } from "lucide-react";
+import { Globe, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -16,18 +16,15 @@ function maskPhone(phone: string) {
 
 export function ClassifiedContactActions({
   phone,
-  email,
   website,
   className,
 }: {
   phone?: string | null;
-  email?: string | null;
   website?: string | null;
   className?: string;
 }) {
   const [showPhone, setShowPhone] = React.useState(false);
   const normalizedPhone = typeof phone === "string" ? phone.trim() : "";
-  const normalizedEmail = typeof email === "string" ? email.trim() : "";
   const normalizedWebsite = typeof website === "string" ? website.trim() : "";
 
   return (
@@ -52,15 +49,6 @@ export function ClassifiedContactActions({
       ) : null}
 
       <div className="grid gap-3 sm:grid-cols-2">
-        {normalizedEmail ? (
-          <Button asChild className="h-11 rounded-full">
-            <a href={`mailto:${normalizedEmail}`} className="inline-flex items-center justify-center gap-2">
-              <Mail className="h-4 w-4" />
-              Send Enquiry
-            </a>
-          </Button>
-        ) : null}
-
         {normalizedPhone ? (
           <Button asChild variant="outline" className="h-11 rounded-full border-border bg-background">
             <a href={`tel:${normalizedPhone}`} className="inline-flex items-center justify-center gap-2">

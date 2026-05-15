@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Building2, FileText, Image as ImageIcon, LayoutGrid, MapPin, MessageCircle, Sparkles, Tag, User, Zap } from 'lucide-react'
+import { ArrowRight, Building2, FileText, Image as ImageIcon, LayoutGrid, MapPin, MessageCircle, Tag, User, Zap } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { TaskListClient } from '@/components/tasks/task-list-client'
@@ -217,11 +217,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
               <div className="pointer-events-none absolute -left-10 bottom-0 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(167,139,250,0.16),transparent_70%)] blur-2xl" />
               <div className="relative grid gap-10 p-8 sm:p-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
                 <div>
-                  <span className={classifieds.badge}>
-                    <Sparkles className="h-3.5 w-3.5" />
-                    {taskConfig?.label || 'Classifieds'}
-                  </span>
-                  <h1 className="mt-5 text-4xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-5xl lg:text-[2.75rem]">
+                  <h1 className="text-4xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-5xl lg:text-[2.75rem]">
                     Local deals, without the scroll fatigue
                   </h1>
                   <p className={`mt-5 max-w-xl text-base leading-8 ${ui.muted}`}>
@@ -232,15 +228,6 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
                     <Link href="/create/classified" className={cn(classifieds.pill, 'inline-flex items-center')}>
                       Post an ad
                       <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                    <Link
-                      href="/pricing"
-                      className="inline-flex items-center rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-[#12B5D4]/40 hover:text-[#0a6f82]"
-                    >
-                      See plans &amp; boosts
-                    </Link>
-                    <Link href="/help" className="text-sm font-semibold text-[#0a6f82] hover:underline">
-                      Buyer &amp; seller guide →
                     </Link>
                   </div>
                 </div>
@@ -376,9 +363,6 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
               <Link href="/help" className={cn(classifieds.pillOutline, 'text-sm')}>
                 Help Center
               </Link>
-              <Link href="/contact" className="text-sm font-semibold text-[#0a6f82] hover:underline">
-                Contact support
-              </Link>
             </div>
           </section>
         ) : intro ? (
@@ -401,3 +385,4 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
     </div>
   )
 }
+
